@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="lmJavaEEWebAppHqfw">
+    <output-path>D:/7-docker/tomcat</output-path>
+    <root id="archive" name="lmJavaEEWebAppHqfw.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="lmJavaEEWebAppHqfw" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mysql-connector-java-5.1.46" />
+          <element id="library" level="project" name="tomcat-lib" />
+          <element id="library" level="project" name="json" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="lmJavaEEWebAppHqfw/web/Web" />
+    </root>
+  </artifact>
+</component>
