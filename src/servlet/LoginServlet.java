@@ -18,6 +18,8 @@ public class LoginServlet extends HttpServlet {
 
         String phone = request.getParameter("phone");
         String password = request.getParameter("password");
+
+        // 给自己看的控制台提示
         System.out.println("phone:" + phone);
         System.out.println("password:" + password );
 
