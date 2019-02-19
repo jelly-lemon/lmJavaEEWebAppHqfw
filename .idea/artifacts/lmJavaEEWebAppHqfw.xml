@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="war" name="lmJavaEEWebAppHqfw">
-    <output-path>D:/7-docker/tomcat</output-path>
+    <output-path>$PROJECT_DIR$/docker/tomcat</output-path>
     <root id="archive" name="lmJavaEEWebAppHqfw.war">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
