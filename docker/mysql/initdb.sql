@@ -1,4 +1,5 @@
-CREATE DATABASE company character set utf8;
+
+CREATE DATABASE company CHARACTER SET utf8;
 
 USE company;
 

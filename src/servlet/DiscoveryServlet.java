@@ -18,6 +18,16 @@ public class DiscoveryServlet extends HttpServlet implements IDiscoveryServlet {
     private HttpServletResponse mResponse;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        mRequest = request;
+        mResponse = response;
+
+        mRequest.setCharacterEncoding("utf8");
+        mResponse.setCharacterEncoding("utf8");
+
+        String start = mRequest.getParameter("start");  // 从哪里开始
+        int startN = Integer.valueOf(start);                // 转为数字
+        discoveryModel.getArticleCard(startN, 5);       // 从 startN 开始，获取 5 条记录
+
 
     }
 
@@ -29,9 +39,10 @@ public class DiscoveryServlet extends HttpServlet implements IDiscoveryServlet {
         mResponse.setCharacterEncoding("utf8");
 
         // 获取结果
-        discoveryModel.getArticleCard(5);
+        discoveryModel.getArticleCard(0, 5);
     }
 
+    // 回复结果
     @Override
     public void response(String r)  {
         try {

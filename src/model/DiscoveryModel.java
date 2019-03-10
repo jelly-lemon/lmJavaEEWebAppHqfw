@@ -11,33 +11,55 @@ import java.sql.*;
 
 
 public class DiscoveryModel {
-    IDiscoveryServlet iDiscoveryServlet;
+    private IDiscoveryServlet iDiscoveryServlet;
 
     public DiscoveryModel(IDiscoveryServlet iDiscoveryServlet) {
         this.iDiscoveryServlet = iDiscoveryServlet;
     }
 
-    public void getArticleCard(int n) {
+
+
+    /**
+     * @param start 起始位置
+     * @param n 从起始位置开始，需要的数量
+     */
+    public void getArticleCard(int start, int n) {
         try {
-            Statement statement = DBDAO.getStatement();
+            Connection con = DBDAO.getConnection();
+            Statement statement = con.createStatement();
             // 查询最新 5 条 article
-            String sql = String.format("SELECT * FROM article_card limit 0,%d;", n);
-            ResultSet resultSet = statement.executeQuery(sql);
+            String sql = String.format("SELECT * FROM discovery_card limit %d,%d;", start, start + n);
+            ResultSet resultSet = statement.executeQuery(sql);  // 查询数据库
 
             JSONArray jsonArray = new JSONArray();
             while (resultSet.next()) {
-                ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-                int len = resultSetMetaData.getColumnCount();
-                JSONObject jsonObject = new JSONObject();
+                ResultSetMetaData resultSetMetaData = resultSet.getMetaData();  // 获取元信息
+
+                /*// 将日期转化位字符串
+                Date date = (Date) resultSet.getDate("time");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd");
+                String dateStr = simpleDateFormat.format(date);
+                // 将时间转化位字符串
+                Time time = (Time) resultSet.getTime("time");
+                simpleDateFormat = new SimpleDateFormat("HH:mm");   // 转化格式
+                String timeStr = simpleDateFormat.format(time); // 转化位字符串
+                article.setTime(dateStr + " " + timeStr);   // 设置为属性*/
+
+
+                int len = resultSetMetaData.getColumnCount();   // 获取列数
+                JSONObject jsonObject = new JSONObject();   // 放入 JSONObject 中
                 // i 从 1 开始
                 for (int i = 1; i <= len; i++) {
                     jsonObject.put(resultSetMetaData.getColumnName(i), resultSet.getString(i));
                 }
-                jsonArray.put(jsonObject);
+
+                jsonArray.put(jsonObject);// 放入 JSONArray 中
             }
             statement.close();
+            con.close();
             String r = jsonArray.toString();
-
+            // TODO 打印在控制台
+            System.out.println(r);
             // 回调接口
             iDiscoveryServlet.response(r);
         } catch (SQLException | JSONException e) {
