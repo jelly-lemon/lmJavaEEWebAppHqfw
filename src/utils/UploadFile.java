@@ -51,11 +51,12 @@ public class UploadFile {
             if (!uploadDir.mkdir()) return null; // 创建失败则返回
         }
         // 打印该目录路径
-        System.out.println("We created a directory：" + uploadPath);
+        System.out.println("We created a directory:" + uploadPath);
         try {
             // 解析请求的内容提取文件数据
-            @SuppressWarnings("unchecked")
+            //@SuppressWarnings("unchecked")
             List<FileItem> formItems = upload.parseRequest(request);
+
             // 如果有数据
             if (formItems != null && formItems.size() > 0) {
                 // 迭代表单数据
