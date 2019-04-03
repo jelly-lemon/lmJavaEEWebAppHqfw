@@ -15,7 +15,7 @@ public class LoginDao {
             // 加载驱动
             Class.forName("com.mysql.jdbc.Driver");
             // 建立连接
-            Connection con = DriverManager.getConnection("jdbc:mysql://mysql_service:3306/company?useSSL=false","root","mysql");
+            Connection con = DriverManager.getConnection("jdbc:mysql://mysql_service:3306/hqfw?useSSL=false","root","mysql");
             // 创建状态
             Statement state = con.createStatement();
             // 查询
@@ -57,7 +57,7 @@ public class LoginDao {
             return jsonObject.toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return "";
         }
+        return null;
     }
 }

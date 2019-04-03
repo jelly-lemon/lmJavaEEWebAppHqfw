@@ -16,7 +16,9 @@ COPY 	./mysql.cnf		/etc/mysql/conf.d/
 #复制初始化 sql 文件
 COPY 	./initdb.sql	/docker-entrypoint-initdb.d/
 
-
+#设置时区
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 
 
