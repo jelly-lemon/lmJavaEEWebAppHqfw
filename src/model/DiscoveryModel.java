@@ -34,35 +34,22 @@ public class DiscoveryModel {
             JSONArray jsonArray = new JSONArray();
             while (resultSet.next()) {
                 ResultSetMetaData resultSetMetaData = resultSet.getMetaData();  // 获取元信息
-
-                /*// 将日期转化位字符串
-                Date date = (Date) resultSet.getDate("time");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd");
-                String dateStr = simpleDateFormat.format(date);
-                // 将时间转化位字符串
-                Time time = (Time) resultSet.getTime("time");
-                simpleDateFormat = new SimpleDateFormat("HH:mm");   // 转化格式
-                String timeStr = simpleDateFormat.format(time); // 转化位字符串
-                article.setTime(dateStr + " " + timeStr);   // 设置为属性*/
-
-
-                int len = resultSetMetaData.getColumnCount();   // 获取列数
-                JSONObject jsonObject = new JSONObject();   // 放入 JSONObject 中
+                int len = resultSetMetaData.getColumnCount();                   // 获取列数
+                JSONObject jsonObject = new JSONObject();                       // 放入 JSONObject 中
                 // i 从 1 开始
                 for (int i = 1; i <= len; i++) {
                     jsonObject.put(resultSetMetaData.getColumnName(i), resultSet.getString(i));
                 }
-
                 jsonArray.put(jsonObject);// 放入 JSONArray 中
             }
             statement.close();
             con.close();
             String r = jsonArray.toString();
-            // TODO 打印在控制台
+            // 打印在控制台
             System.out.println(r);
             // 回调接口
             iDiscoveryServlet.response(r);
-        } catch (SQLException | JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

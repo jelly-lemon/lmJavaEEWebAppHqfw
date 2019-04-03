@@ -23,5 +23,6 @@
     <orderEntry type="library" exported="" name="tomcat-lib" level="project" />
     <orderEntry type="library" exported="" name="json" level="project" />
     <orderEntry type="library" name="gson-2.8.5" level="project" />
+    <orderEntry type="library" name="commons-fileupload-1" level="project" />
   </component>
 </module>

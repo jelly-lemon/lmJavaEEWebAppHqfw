@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="commons-fileupload-1">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/libs/commons-fileupload-1.4-bin" />
+      <root url="file://$PROJECT_DIR$/libs/commons-io-2.6" />
+      <root url="file://$PROJECT_DIR$/libs/commons-lang3-3.8.1" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/libs/commons-fileupload-1.4-bin/apidocs" />
+      <root url="file://$PROJECT_DIR$/libs/commons-fileupload-1.4-bin/site/apidocs" />
+      <root url="file://$PROJECT_DIR$/libs/commons-io-2.6/docs" />
+      <root url="file://$PROJECT_DIR$/libs/commons-lang3-3.8.1/apidocs" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/libs/commons-fileupload-1.4-bin" />
+      <root url="file://$PROJECT_DIR$/libs/commons-io-2.6" />
+      <root url="file://$PROJECT_DIR$/libs/commons-lang3-3.8.1" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/libs/commons-fileupload-1.4-bin" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/commons-io-2.6" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/commons-lang3-3.8.1" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/commons-fileupload-1.4-bin" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/commons-io-2.6" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/commons-lang3-3.8.1" recursive="false" type="SOURCES" />
+  </library>
+</component>
