@@ -3,14 +3,12 @@ package entity;
 
 
 public class User {
-    // 属性命名与数据库保持一致
     private String phone;
     private String password;
+    private String studentID;
+    private String headURL;
     private String name;
-    private String student_id;
-    private String head;
     private String gender;
-
 
     public String getPhone() {
         return phone;
@@ -36,20 +34,20 @@ public class User {
         this.name = name;
     }
 
-    public String getStudent_id() {
-        return student_id;
+    public String getStudentID() {
+        return studentID;
     }
 
-    public void setStudent_id(String student_id) {
-        this.student_id = student_id;
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
     }
 
-    public String getHead() {
-        return head;
+    public String getHeadURL() {
+        return headURL;
     }
 
-    public void setHead(String head) {
-        this.head = head;
+    public void setHeadURL(String headURL) {
+        this.headURL = headURL;
     }
 
     public String getGender() {

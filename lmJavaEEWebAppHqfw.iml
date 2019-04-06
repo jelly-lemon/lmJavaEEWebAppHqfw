@@ -21,8 +21,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="mysql-connector-java-5.1.46" level="project" />
     <orderEntry type="library" exported="" name="tomcat-lib" level="project" />
-    <orderEntry type="library" exported="" name="json" level="project" />
-    <orderEntry type="library" name="gson-2.8.5" level="project" />
-    <orderEntry type="library" name="commons-fileupload-1" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.8.5" level="project" />
+    <orderEntry type="library" exported="" name="fileupload" level="project" />
   </component>
 </module>

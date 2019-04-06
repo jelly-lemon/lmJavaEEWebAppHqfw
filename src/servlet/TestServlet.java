@@ -1,6 +1,5 @@
 package servlet;
 
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

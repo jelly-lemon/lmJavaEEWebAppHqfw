@@ -1,5 +1,6 @@
 version: '3'
 
+
 services:
   tomcat:
     build: ./tomcat
@@ -25,7 +26,7 @@ services:
          - mysql_service
 
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      - /home/jelly-lemon/mysqldata:/var/lib/mysql
 
 
 networks:

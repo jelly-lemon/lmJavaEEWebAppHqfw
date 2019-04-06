@@ -9,9 +9,8 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="mysql-connector-java-5.1.46" />
           <element id="library" level="project" name="tomcat-lib" />
-          <element id="library" level="project" name="json" />
           <element id="library" level="project" name="gson-2.8.5" />
-          <element id="library" level="project" name="commons-fileupload-1" />
+          <element id="library" level="project" name="fileupload" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="lmJavaEEWebAppHqfw/web/Web" />

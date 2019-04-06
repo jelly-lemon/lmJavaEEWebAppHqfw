@@ -4,33 +4,37 @@ package utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
+/**
+ * 数据库操作
+ */
 public class DBDAO {
+    // 驱动类名
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    // 数据库名
     static String dataBase = "hqfw";
+    // 账户
     static String user = "root";
+    // 密码
     static String password = "mysql";
 
 
-
-
+    /**
+     * 获取一个数据库连接对象
+     * @return  Connection 对象
+     */
     public static Connection getConnection() {
-        String url = String.format("jdbc:mysql://mysql_service:3306/%s?useSSL=false", dataBase);
+        Connection con = null;
         try {
-
+            String url = String.format("jdbc:mysql://mysql_service:3306/%s?useSSL=false", dataBase);
             // 加载驱动
             Class.forName(JDBC_DRIVER);
             // 建立连接
-            Connection con;
             con = DriverManager.getConnection(url, user, password); // 创建连接对象
-
-            return con;
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return null;
+        return con;
     }
 
 }
