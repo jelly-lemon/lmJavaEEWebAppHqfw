@@ -162,6 +162,9 @@
                prefix="localhost_access_log" suffix=".txt"
                pattern="%h %l %u %t &quot;%r&quot; %s %b" />
 
+        <!-- to visit host file by lemon -->
+        <Context docBase ="/images" path ="/images" debug ="0" reloadable ="true"/>
+
       </Host>
     </Engine>
   </Service>

@@ -7,6 +7,10 @@ MAINTAINER lmTest <lmTest@gmail.com>
 #设置 root 用户密码
 ENV MYSQL_ROOT_PASSWORD mysql
 
+#COPY    /etc/localtime  /etc
+#时区
+#ENV TZ  Asia/Shanghai
+
 #移除 The MySQL  Client configuration file
 RUN		rm	/etc/mysql/conf.d/mysql.cnf
 
@@ -23,8 +27,9 @@ COPY    ./my.cnf    /etc/mysql/
 COPY 	./initdb.sql	/docker-entrypoint-initdb.d/
 
 #设置时区
-#NV TZ=Asia/Shanghai
-#RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 
 
 

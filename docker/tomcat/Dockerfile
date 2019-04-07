@@ -29,6 +29,9 @@ COPY	./lmJavaEEWebAppHqfw.war		/usr/local/tomcat/webapps
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+#远程调试
+#ENV CATALINA_OPTS: "-Xdebug -Xrunjdwp:transport=dt_socket,address=5005,suspend=n,server=y"
+
 #日志中文乱码的问题
 #ENV   LC_ALL en_US.UTF-8
 

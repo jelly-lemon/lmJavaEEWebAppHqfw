@@ -2,6 +2,7 @@ package model;
 
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import entity.Discovery;
 import entity.DiscoveryCard;
 import entity.User;
@@ -32,12 +33,11 @@ public class DiscoveryModel {
         try {
             Connection con = DBDAO.getConnection();
             Statement statement = con.createStatement();
-            // 查询最新 5 条 article
-            String sql = String.format("SELECT * FROM DiscoveryCard limit %d,%d;", start, start + n);
+
+            // 查询最新 n 条 article
+            String sql = String.format("SELECT * FROM DiscoveryCard  ORDER BY dateTime DESC limit %d,%d;", start, start + n);
             ResultSet resultSet = statement.executeQuery(sql);  // 查询数据库
 
-            //JSONArray jsonArray = new JSONArray();
-            //JsonArray jsonArray = new JsonArray();
             List<DiscoveryCard> discoveryCardList = new ArrayList<>();
             while (resultSet.next()) {
                 /*ResultSetMetaData resultSetMetaData = resultSet.getMetaData();  // 获取元信息
@@ -48,6 +48,7 @@ public class DiscoveryModel {
                     jsonObject.put(resultSetMetaData.getColumnName(i), resultSet.getString(i));
                 }
                 jsonArray.put(jsonObject);// 放入 JSONArray 中*/
+
                 Discovery discovery = new Discovery();
                 discovery.setDiscoveryID(resultSet.getInt("discoveryID"));
                 discovery.setPhone(resultSet.getString("phone"));
@@ -55,25 +56,20 @@ public class DiscoveryModel {
                 discovery.setTag(resultSet.getString("tag"));
                 discovery.setContent(resultSet.getString("content"));
                 discovery.setImgURL(resultSet.getString("imgURL"));
+
                 User user = new User();
-                user.setHeadURL("headURL");
-                user.setName("name");
-                user.setGender("gender");
+                user.setHeadURL(resultSet.getString("headURL"));
+                user.setName(resultSet.getString("name"));
+                user.setGender(resultSet.getString("gender"));
+
                 DiscoveryCard discoveryCard = new DiscoveryCard();
                 discoveryCard.setDiscovery(discovery);
                 discoveryCard.setUser(user);
+
                 discoveryCardList.add(discoveryCard);
-
-
-                //Gson gson = new Gson();
-
-                // 添加到数组中
-                //jsonArray.add(gson.toJson(discoveryCard));
             }
             Gson gson = new Gson();
             String r = gson.toJson(discoveryCardList);
-
-            //String r = jsonArray.toString();
             // 打印在控制台
             System.out.println("DiscoveryModel:" + r);
             // 回调接口

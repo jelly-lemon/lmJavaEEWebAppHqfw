@@ -1,6 +1,8 @@
 package servlet;
 
 import model.PublishDiscoveryModel;
+//import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItem;
 import utils.UploadFile;
 
 import javax.servlet.ServletException;
@@ -9,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "PublishDiscoveryServlet", urlPatterns = {"/PublishDiscoveryServlet"})
 public class PublishDiscoveryServlet extends HttpServlet {
@@ -18,26 +22,20 @@ public class PublishDiscoveryServlet extends HttpServlet {
         request.setCharacterEncoding("utf-8");           // 字符编码
         response.setCharacterEncoding("utf-8");
 
-        String phone = request.getParameter("phone");       // phone
-        String article_id = null;
-        // 先处理文本
-        if (phone != null) {
-            String content = request.getParameter("content");   // content
-            String tag = request.getParameter("tag");           // tag
-            System.out.println("phone:" + phone);
-            System.out.println("content:" + content);
-            System.out.println("tag:" + tag);
+        List<FileItem> fileItemList = UploadFile.getFileItemList(request);
+        // 获取参数键值对
+        Map<String, String> parameterMap = UploadFile.getParameterMap(fileItemList);
 
-            article_id = publishDiscoveryModel.insertAndGetArticleId(phone, content, tag);    // 先插入部分内容，获取 article_id
-            System.out.println("article_id:" + article_id);
-        } else if (article_id != null){    // 后处理图片
-            // 图片 url 的 json
-            String img_url_json = UploadFile.saveFile(request, article_id);
-            // 把图片路径保存到数据库当中
-            publishDiscoveryModel.insertImgUrl(img_url_json, article_id);
-        }
-
-
+        String phone = parameterMap.get("phone");
+        String content = parameterMap.get("content");
+        String tag = parameterMap.get("tag");
+        String discoveryID = publishDiscoveryModel.insertAndGetDiscoveryID(phone, content, tag);    // 先插入部分内容，获取 discoveryID
+        // 打印在控制台
+        System.out.println("PublishDiscoveryServlet:" + " discoveryID:" + discoveryID + " phone:" + phone + " content:" + content + " tag:" + tag);
+        // 保存图片
+        String imgURL = UploadFile.saveDiscoveryImage(fileItemList, discoveryID);
+        // 保存图片名字到数据库
+        publishDiscoveryModel.insertImgUrl(discoveryID, imgURL);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

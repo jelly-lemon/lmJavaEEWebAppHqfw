@@ -9,10 +9,15 @@ services:
     restart: always
     ports:
       - 0.0.0.0:8080:8080
+      - 0.0.0.0:5005:5005
     networks:
       - lmnetwork
+    environment:
+      CATALINA_OPTS: "-Xdebug -Xrunjdwp:transport=dt_socket,address=5005,suspend=n,server=y"
+    volumes:
+      - /home/jelly-lemon/images:/images
 
-      
+
   mysql:
     build: ./mysql
     image: lmmysql:1.0.0
@@ -27,6 +32,8 @@ services:
 
     volumes:
       - /home/jelly-lemon/mysqldata:/var/lib/mysql
+#      - /etc/timezone:/etc/timezone
+#      - /etc/localtime:/etc/localtime
 
 
 networks:
