@@ -237,6 +237,12 @@ public class UploadFile {
         return jsonArray.toString();
     }*/
 
+    /**
+     * 保存发现图片
+     * @param fileItemList
+     * @param discoveryID
+     * @return 图片 url
+     */
     public static String saveDiscoveryImage(List<FileItem> fileItemList, String discoveryID) {
         // 磁盘文件工厂
         DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -261,20 +267,18 @@ public class UploadFile {
             if (!fileItem.isFormField()) {
                 // 文件名字
                 String fileName = new File(fileItem.getName()).getName();
-                // 保存到 JsonArray 中
-                jsonArray.add(fileName);
                 // 文件存储路径
                 String savePathAndName = path + fileName;
                 // 创建文件
                 File storeFile = new File(savePathAndName);
-                // 在控制台输出文件的上传路径
-                //System.out.println(savePathAndName);
                 // 保存文件到硬盘
                 try {
                     fileItem.write(storeFile);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                // 保存到 JsonArray 中
+                jsonArray.add(savePathAndName);
                 System.out.println("UploadFile:" + savePathAndName);
             }
         }
