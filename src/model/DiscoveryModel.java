@@ -40,15 +40,6 @@ public class DiscoveryModel {
 
             List<DiscoveryCard> discoveryCardList = new ArrayList<>();
             while (resultSet.next()) {
-                /*ResultSetMetaData resultSetMetaData = resultSet.getMetaData();  // 获取元信息
-                int len = resultSetMetaData.getColumnCount();                   // 获取列数
-                JSONObject jsonObject = new JSONObject();                       // 放入 JSONObject 中
-                // i 从 1 开始
-                for (int i = 1; i <= len; i++) {
-                    jsonObject.put(resultSetMetaData.getColumnName(i), resultSet.getString(i));
-                }
-                jsonArray.put(jsonObject);// 放入 JSONArray 中*/
-
                 Discovery discovery = new Discovery();
                 discovery.setDiscoveryID(resultSet.getInt("discoveryID"));
                 discovery.setPhone(resultSet.getString("phone"));

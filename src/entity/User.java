@@ -5,10 +5,37 @@ package entity;
 public class User {
     private String phone;
     private String password;
+    private String role;
     private String studentID;
     private String headURL;
     private String name;
     private String gender;
+    private String building;
+    private String roomNumber;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
 
     public String getPhone() {
         return phone;

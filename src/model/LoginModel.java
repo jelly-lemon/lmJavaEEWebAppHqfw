@@ -26,7 +26,7 @@ public class LoginModel {
 
 
             // 查询
-            String sql = String.format("select * from User where phone='%s';", phone);
+            String sql = String.format("select * from Users where phone='%s';", phone);
             ResultSet rs = statement.executeQuery(sql);
 
             //JSONObject jsonObject = new JSONObject();
@@ -41,13 +41,7 @@ public class LoginModel {
                     // 密码正确
                     code = "1";
                     msg = "登录成功";
-                    /*ResultSetMetaData resultSetMetaData = rs.getMetaData();  // 获取元信息
-                    //resultSetMetaData.getColumnType()
-                    int len = resultSetMetaData.getColumnCount();                   // 获取列数
-                    // i 从 1 开始遍历
-                    for (int i = 1; i <= len; i++) {
-                        jsonObject.put(resultSetMetaData.getColumnName(i), rs.getString(i));
-                    }*/
+
                     Gson gson = new Gson();
                     String userJSON = gson.toJson(getUser(phone));
                     jsonObject.addProperty("user", userJSON);
@@ -62,8 +56,6 @@ public class LoginModel {
                 msg = "账号不存在";
             }
 
-            //jsonObject.put("code", code);
-            //jsonObject.put("msg", msg);
             jsonObject.addProperty("code", code);
             jsonObject.addProperty("msg", msg);
             result = jsonObject.toString();
@@ -87,15 +79,18 @@ public class LoginModel {
             Connection con = DBDAO.getConnection();
             Statement statement = con.createStatement();
 
-            String sql = String.format("SELECT * FROM User WHERE phone='%s';", phone);
+            String sql = String.format("SELECT * FROM Users WHERE phone='%s';", phone);
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
                 user.setPhone(resultSet.getString("phone"));
                 user.setPassword(resultSet.getString("password"));
-                user.setStudentID(resultSet.getString("StudentID"));
+                user.setRole(resultSet.getString("role"));
+                user.setStudentID(resultSet.getString("studentID"));
                 user.setHeadURL(resultSet.getString("headURL"));
                 user.setName(resultSet.getString("name"));
                 user.setGender(resultSet.getString("gender"));
+                user.setBuilding(resultSet.getString("building"));
+                user.setRoomNumber(resultSet.getString("roomNumber"));
             }
 
             statement.close();

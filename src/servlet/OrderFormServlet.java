@@ -17,6 +17,12 @@ import java.util.List;
 
 @WebServlet(name = "OrderFormServlet", urlPatterns = "/OrderFormServlet")
 public class OrderFormServlet extends HttpServlet {
+
+    // 数量
+    //private int n = 5;
+    // 开始
+    //private int start = n;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // encoding
         request.setCharacterEncoding("utf-8");
@@ -53,12 +59,45 @@ public class OrderFormServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
 
-        Connection connection = DBDAO.getConnection();
+        // 获取请求参数
+        String method = request.getParameter("method");
+
+        if (method.equals("refresh")) {
+            onRefresh(response);
+        } else if (method.equals("loadMore")) {
+            int start = Integer.valueOf(request.getParameter("start"));
+            onLoadMore(response, start);
+        }
+    }
+
+    /**
+     * 请求刷新时返回的数据
+     * @param response
+     */
+    private void onRefresh(HttpServletResponse response) {
+        String sql = String.format("SELECT * FROM OrderForm ORDER BY dateTime DESC LIMIT %d;", 5);
+
+        onWrite(response, sql);
+    }
+
+    /**
+     * 请求加载更多时返回的数据
+     * @param response
+     */
+    private void onLoadMore(HttpServletResponse response, int start) {
+        String sql = String.format("SELECT * FROM OrderForm ORDER BY dateTime DESC LIMIT %d,5;", start);
+
+        onWrite(response, sql);
+    }
+
+    private void onWrite(HttpServletResponse response, String sql) {
         try {
+            Connection connection = DBDAO.getConnection();
             Statement statement = connection.createStatement();
-            String sql = "SELECT * FROM OrderForm;";
+
             ResultSet resultSet = statement.executeQuery(sql);
             List<OrderForm> orderFormList = new ArrayList<>();
             while (resultSet.next()) {
@@ -81,13 +120,13 @@ public class OrderFormServlet extends HttpServlet {
             Gson gson = new Gson();
             String r = gson.toJson(orderFormList);
 
-            System.out.println("OrderForm:" + r);
+            System.out.println("OrderFormServlet:" + r);
 
             Writer writer = response.getWriter();
             writer.write(r);
             writer.flush();
             writer.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

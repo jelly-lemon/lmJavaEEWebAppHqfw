@@ -27,8 +27,6 @@ public class DiscoveryServlet extends HttpServlet implements IDiscoveryServlet {
         String start = mRequest.getParameter("start");  // 从哪里开始
         int startN = Integer.valueOf(start);                // 转为数字
         discoveryModel.getArticleCard(startN, 5);       // 从 startN 开始，获取 5 条记录
-
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
