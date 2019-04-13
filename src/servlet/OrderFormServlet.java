@@ -1,6 +1,7 @@
 package servlet;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import entity.OrderForm;
 import utils.DBDAO;
 
@@ -26,17 +27,100 @@ public class OrderFormServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // encoding
         request.setCharacterEncoding("utf-8");
-        // get json
-        String json = request.getParameter("orderForm");
-        // log
-        System.out.println("OrderFormServlet:" + json);
-        // convert into object
-        Gson gson = new Gson();
-        OrderForm orderForm = gson.fromJson(json, OrderForm.class);
+        response.setCharacterEncoding("utf-8");
+
+        String method = request.getParameter("method");
+        String sql;
+        switch (method) {
+            case "onInsertOrderForm":
+                sql = "INSERT INTO OrderForm(dateTime, shoppingList, buyerPhone, receiveName, receivePhone, receiveAddress, orderFormStatus, totalPrice)  VALUES(NOW(), ?, ?, ?, ?, ?, ?, ?);";
+
+                // get json
+                String json = request.getParameter("orderForm");
+                // log
+                System.out.println("OrderFormServlet:onInsertOrderForm:" + json);
+                // convert into object
+                Gson gson = new Gson();
+                OrderForm orderForm = gson.fromJson(json, OrderForm.class);
+
+                onInsertOrderForm(response, sql, orderForm);
+
+                break;
+            case "onUpdateStatus":
+                String orderFormID = request.getParameter("orderFormID");
+                sql = String.format("UPDATE OrderForm SET orderFormStatus = '交易完成' WHERE orderFormID = %s;", orderFormID);
+                onUpdateStatus(sql);
+                break;
+        }
+
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
+
+        // 获取请求参数
+        String method = request.getParameter("method");
+
+        switch (method) {
+
+            case "getAllOrderForm":
+                getAllOrderForm(response);
+                break;
+
+            case "loadMoreOrderForm": {
+                int start = Integer.valueOf(request.getParameter("start"));
+                loadMoreOrderForm(response, start);
+                break;
+            }
+
+
+            case "getUnPaidOrderForm":
+                getUnpaidOrderForm(response);
+                break;
+
+            case "loadMoreUnPaidOrderForm":{
+                int start = Integer.valueOf(request.getParameter("start"));
+                loadMoreUnPaidOrderForm(response, start);
+                break;
+            }
+
+        }
+
+    }
+
+    private void loadMoreUnPaidOrderForm(HttpServletResponse response, int start) {
+        String sql = String.format("SELECT * FROM OrderForm WHERE orderFormStatus = '等待付款' ORDER BY dateTime DESC LIMIT %d,5;", start);
+
+        onWrite(response, getOrderForm(sql));
+    }
+
+    private void getUnpaidOrderForm(HttpServletResponse response) {
+        String sql = String.format("SELECT * FROM OrderForm  WHERE orderFormStatus = '等待付款' ORDER BY dateTime DESC LIMIT %d;", 5);
+
+        onWrite(response, getOrderForm(sql));
+    }
+
+
+    private void onUpdateStatus(String sql) {
         // get connection
         Connection connection = DBDAO.getConnection();
         try {
-            String sql = "INSERT INTO OrderForm(dateTime, shoppingList, buyerPhone, receiveName, receivePhone, receiveAddress, orderFormStatus, totalPrice)  VALUES(NOW(), ?, ?, ?, ?, ?, ?, ?);";
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onInsertOrderForm(HttpServletResponse response, String sql, OrderForm orderForm) {
+        // get connection
+        Connection connection = DBDAO.getConnection();
+        try {
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, orderForm.getShoppingList());
@@ -48,28 +132,24 @@ public class OrderFormServlet extends HttpServlet {
             preparedStatement.setFloat(7, orderForm.getTotalPrice());
 
             preparedStatement.executeUpdate();
-
             preparedStatement.close();
+
+            sql = "SELECT LAST_INSERT_ID()";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            JsonObject jsonObject = new JsonObject();
+            if (resultSet.next()) {
+                int orderFormID = resultSet.getInt(1);
+                jsonObject.addProperty("orderFormID", orderFormID);
+            }
+            statement.close();
+
+            // 向客户端回复
+            onWrite(response, new Gson().toJson(jsonObject));
+
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-
-        }
-
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("utf-8");
-        response.setCharacterEncoding("utf-8");
-
-        // 获取请求参数
-        String method = request.getParameter("method");
-
-        if (method.equals("refresh")) {
-            onRefresh(response);
-        } else if (method.equals("loadMore")) {
-            int start = Integer.valueOf(request.getParameter("start"));
-            onLoadMore(response, start);
         }
     }
 
@@ -77,23 +157,36 @@ public class OrderFormServlet extends HttpServlet {
      * 请求刷新时返回的数据
      * @param response
      */
-    private void onRefresh(HttpServletResponse response) {
+    private void getAllOrderForm(HttpServletResponse response) {
         String sql = String.format("SELECT * FROM OrderForm ORDER BY dateTime DESC LIMIT %d;", 5);
 
-        onWrite(response, sql);
+        onWrite(response, getOrderForm(sql));
     }
 
     /**
      * 请求加载更多时返回的数据
      * @param response
      */
-    private void onLoadMore(HttpServletResponse response, int start) {
+    private void loadMoreOrderForm(HttpServletResponse response, int start) {
         String sql = String.format("SELECT * FROM OrderForm ORDER BY dateTime DESC LIMIT %d,5;", start);
 
-        onWrite(response, sql);
+        onWrite(response, getOrderForm(sql));
     }
 
-    private void onWrite(HttpServletResponse response, String sql) {
+
+    private void onWrite(HttpServletResponse response, String result) {
+        try {
+            Writer writer = response.getWriter();
+            writer.write(result);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String getOrderForm(String sql) {
         try {
             Connection connection = DBDAO.getConnection();
             Statement statement = connection.createStatement();
@@ -120,14 +213,14 @@ public class OrderFormServlet extends HttpServlet {
             Gson gson = new Gson();
             String r = gson.toJson(orderFormList);
 
-            System.out.println("OrderFormServlet:" + r);
+            System.out.println("OrderFormServlet:getOrderForm:" + r);
 
-            Writer writer = response.getWriter();
-            writer.write(r);
-            writer.flush();
-            writer.close();
+
+            return r;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

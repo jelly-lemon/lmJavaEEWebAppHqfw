@@ -19,9 +19,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="mysql-connector-java-5.1.46" level="project" />
-    <orderEntry type="library" exported="" name="tomcat-lib" level="project" />
     <orderEntry type="library" exported="" name="gson-2.8.5" level="project" />
     <orderEntry type="library" exported="" name="fileupload" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-5.1.46" level="project" />
+    <orderEntry type="library" name="tomcat-lib" level="project" />
   </component>
 </module>
