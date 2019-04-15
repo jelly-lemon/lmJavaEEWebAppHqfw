@@ -51,6 +51,7 @@ public class DiscoveryModel {
                 User user = new User();
                 user.setHeadURL(resultSet.getString("headURL"));
                 user.setName(resultSet.getString("name"));
+                user.setRole(resultSet.getString("role"));
                 user.setGender(resultSet.getString("gender"));
 
                 DiscoveryCard discoveryCard = new DiscoveryCard();

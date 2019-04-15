@@ -1,44 +1,48 @@
 package entity;
 
+import java.sql.Timestamp;
+
 public class Comment {
-    private String article_id;
-    private String comment_id;
-    private String phone;
-    private String time;
+    private int commentID;
+    private String senderPhone;
+    private Timestamp dateTime;
+
+    private int discoveryID;
     private String content;
 
-
-    public String getArticle_id() {
-        return article_id;
+    public int getDiscoveryID() {
+        return discoveryID;
     }
 
-    public void setArticle_id(String article_id) {
-        this.article_id = article_id;
+    public void setDiscoveryID(int discoveryID) {
+        this.discoveryID = discoveryID;
     }
 
-    public String getComment_id() {
-        return comment_id;
+    public int getCommentID() {
+        return commentID;
     }
 
-    public void setComment_id(String comment_id) {
-        this.comment_id = comment_id;
+    public void setCommentID(int commentID) {
+        this.commentID = commentID;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getSenderPhone() {
+        return senderPhone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setSenderPhone(String senderPhone) {
+        this.senderPhone = senderPhone;
     }
 
-    public String getTime() {
-        return time;
+    public Timestamp getDateTime() {
+        return dateTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setDateTime(Timestamp dateTime) {
+        this.dateTime = dateTime;
     }
+
+
 
     public String getContent() {
         return content;

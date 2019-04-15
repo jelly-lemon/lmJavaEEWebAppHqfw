@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
 
-@WebServlet(name = "DiscoveryServlet", urlPatterns = {"/DiscoveryServlet"})
-public class DiscoveryServlet extends HttpServlet implements IDiscoveryServlet {
+@WebServlet(name = "DiscoveryCardServlet", urlPatterns = {"/DiscoveryCardServlet"})
+public class DiscoveryCardServlet extends HttpServlet implements IDiscoveryServlet {
     private DiscoveryModel discoveryModel = new DiscoveryModel(this);
     private HttpServletRequest mRequest;
     private HttpServletResponse mResponse;
