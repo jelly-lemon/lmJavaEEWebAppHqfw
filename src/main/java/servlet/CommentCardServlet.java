@@ -34,7 +34,14 @@ public class CommentCardServlet extends HttpServlet {
         switch (method) {
             case "refresh": {
                 String discoveryID = request.getParameter("discoveryID");
-                String sql = String.format("SELECT * FROM CommentCard WHERE discoveryID = %s;", discoveryID);
+                String sql = String.format("SELECT * FROM CommentCard WHERE discoveryID = %s ORDER BY dateTime ASC;", discoveryID);
+                write(response, getCommentCard(sql));
+                break;
+            }
+            case "loadMore": {
+                String discoveryID = request.getParameter("discoveryID");
+                String start = request.getParameter("start");
+                String sql = String.format("SELECT * FROM CommentCard WHERE discoveryID = %s ORDER BY dateTime ASC LIMIT %s,5;", discoveryID, start);
                 write(response, getCommentCard(sql));
                 break;
             }
@@ -72,7 +79,9 @@ public class CommentCardServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new Gson().toJson(commentCardList);
+        String r = new Gson().toJson(commentCardList);
+        System.out.println("CommentCardServlet:" + r);
+        return r;
     }
 
     private void write(HttpServletResponse response, String result) {

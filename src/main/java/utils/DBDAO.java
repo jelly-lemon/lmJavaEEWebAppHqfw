@@ -4,6 +4,8 @@ package utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * 数据库操作
@@ -21,7 +23,7 @@ public class DBDAO {
 
     /**
      * 获取一个数据库连接对象
-     * @return  Connection 对象
+     * @return  Connection 连接对象
      */
     public static Connection getConnection() {
         Connection con = null;
@@ -35,6 +37,26 @@ public class DBDAO {
             e.printStackTrace();
         }
         return con;
+    }
+
+
+    /**
+     * 插入
+     * @param sql 插入语句
+     */
+    public static int insert(String sql) {
+        int n = 0;
+        Connection connection = getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            n = statement.executeUpdate(sql);
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return n;
     }
 
 }

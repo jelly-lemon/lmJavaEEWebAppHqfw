@@ -1,6 +1,8 @@
 package servlet;
 
+import com.google.gson.Gson;
 import entity.Comment;
+import utils.DBDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 @WebServlet(name = "CommentServlet", urlPatterns = "/CommentServlet")
 public class CommentServlet extends HttpServlet {
@@ -18,8 +23,11 @@ public class CommentServlet extends HttpServlet {
         String method = request.getParameter("method");
         switch (method){
             case "insert": {
+                Comment comment = new Gson().fromJson(request.getParameter("comment"), Comment.class);
 
-                //String
+                String sql = String.format("INSERT INTO `Comment`(dateTime, senderPhone,  discoveryID, content) VALUES(NOW() ,'%s', %s, '%s');",
+                        comment.getSenderPhone(), comment.getDiscoveryID(), comment.getContent());
+                DBDAO.insert(sql);
                 break;
             }
         }
@@ -29,7 +37,4 @@ public class CommentServlet extends HttpServlet {
 
     }
 
-    private void insert(String sql) {
-
-    }
 }
