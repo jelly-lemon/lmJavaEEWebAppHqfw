@@ -9,6 +9,24 @@ public class Discovery {
     String tag;
     String content;
     String imgURL;
+    String contactQQ;
+    String contactPhone;
+
+    public String getContactQQ() {
+        return contactQQ;
+    }
+
+    public void setContactQQ(String contactQQ) {
+        this.contactQQ = contactQQ;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
 
     public String getImgURL() {
         return imgURL;

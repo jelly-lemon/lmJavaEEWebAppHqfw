@@ -47,6 +47,8 @@ public class DiscoveryModel {
                 discovery.setTag(resultSet.getString("tag"));
                 discovery.setContent(resultSet.getString("content"));
                 discovery.setImgURL(resultSet.getString("imgURL"));
+                discovery.setContactQQ(resultSet.getString("contactQQ"));
+                discovery.setContactPhone(resultSet.getString("contactPhone"));
 
                 User user = new User();
                 user.setHeadURL(resultSet.getString("headURL"));

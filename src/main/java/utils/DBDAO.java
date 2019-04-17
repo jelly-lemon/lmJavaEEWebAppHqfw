@@ -2,10 +2,12 @@ package utils;
 
 
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.Writer;
+import java.sql.*;
 
 /**
  * 数据库操作
@@ -57,6 +59,47 @@ public class DBDAO {
             e.printStackTrace();
         }
         return n;
+    }
+
+
+    /**
+     * 查询
+     * @param sql 查询语句
+     * @param response 回复对象
+     */
+    public static void query(String sql, HttpServletResponse response) {
+        JsonArray jsonArray = new JsonArray();
+        try {
+            // 查询
+            Connection connection = DBDAO.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            // 提取
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            while (resultSet.next()) {
+                JsonObject jsonObject = new JsonObject();
+
+                // 一条数据
+                for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
+                    jsonObject.addProperty(resultSetMetaData.getColumnLabel(i), resultSet.getString(i));
+                }
+
+                jsonArray.add(jsonObject);
+            }
+
+            // 回复
+            Writer writer = response.getWriter();
+            writer.write(jsonArray.toString());
+            writer.flush();
+
+            // 关闭
+            resultSet.close();
+            statement.close();
+            connection.close();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -34,14 +34,14 @@ public class CommentCardServlet extends HttpServlet {
         switch (method) {
             case "refresh": {
                 String discoveryID = request.getParameter("discoveryID");
-                String sql = String.format("SELECT * FROM CommentCard WHERE discoveryID = %s ORDER BY dateTime ASC;", discoveryID);
+                String sql = String.format("SELECT * FROM CommentCard WHERE discoveryID = %s ORDER BY dateTime ASC LIMIT 20;", discoveryID);
                 write(response, getCommentCard(sql));
                 break;
             }
             case "loadMore": {
                 String discoveryID = request.getParameter("discoveryID");
                 String start = request.getParameter("start");
-                String sql = String.format("SELECT * FROM CommentCard WHERE discoveryID = %s ORDER BY dateTime ASC LIMIT %s,5;", discoveryID, start);
+                String sql = String.format("SELECT * FROM CommentCard WHERE discoveryID = %s ORDER BY dateTime ASC LIMIT %s,20;", discoveryID, start);
                 write(response, getCommentCard(sql));
                 break;
             }
@@ -74,6 +74,7 @@ public class CommentCardServlet extends HttpServlet {
                 commentCard.setUser(user);
                 commentCardList.add(commentCard);
             }
+            resultSet.close();
             statement.close();
             connection.close();
         } catch (Exception e) {
