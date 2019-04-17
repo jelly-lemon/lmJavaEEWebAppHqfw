@@ -30,10 +30,23 @@ public class OrderFormServlet extends HttpServlet {
         response.setCharacterEncoding("utf-8");
 
         String method = request.getParameter("method");
-        String sql;
+
         switch (method) {
-            case "onInsertOrderForm":
-                sql = "INSERT INTO OrderForm(dateTime, shoppingList, buyerPhone, receiveName, receivePhone, receiveAddress, orderFormStatus, totalPrice)  VALUES(NOW(), ?, ?, ?, ?, ?, ?, ?);";
+            /*case "refresh": {
+                String sql = "SELECT * FROM OrderForm ORDER BY dateTime DESC limit 5;";
+                DBDAO.query(sql, response);
+                break;
+            }
+
+            case "loadMore": {
+                String start = request.getParameter("start");
+                String sql = String.format("SELECT * FROM OrderForm ORDER BY dateTime DESC LIMIT %s,5;", start);
+                DBDAO.query(sql, response);
+                break;
+            }
+
+            case "onInsertOrderForm": {
+                String sql = "INSERT INTO OrderForm(dateTime, shoppingList, buyerPhone, receiveName, receivePhone, receiveAddress, orderFormStatus, totalPrice)  VALUES(NOW(), ?, ?, ?, ?, ?, ?, ?);";
 
                 // get json
                 String json = request.getParameter("orderForm");
@@ -46,11 +59,15 @@ public class OrderFormServlet extends HttpServlet {
                 onInsertOrderForm(response, sql, orderForm);
 
                 break;
-            case "onUpdateStatus":
+            }
+
+            case "onUpdateStatus": {
                 String orderFormID = request.getParameter("orderFormID");
-                sql = String.format("UPDATE OrderForm SET orderFormStatus = '交易完成' WHERE orderFormID = %s;", orderFormID);
+                String sql = String.format("UPDATE OrderForm SET orderFormStatus = '交易完成' WHERE orderFormID = %s;", orderFormID);
                 onUpdateStatus(sql);
                 break;
+            }*/
+
         }
 
 
@@ -65,13 +82,30 @@ public class OrderFormServlet extends HttpServlet {
 
         switch (method) {
 
-            case "getAllOrderForm":
+            case "refresh": {
+                String sql = "SELECT * FROM OrderForm ORDER BY dateTime DESC limit 5;";
+                DBDAO.query(sql, response);
+                break;
+            }
+
+            case "loadMore": {
+                String start = request.getParameter("start");
+                String sql = String.format("SELECT * FROM OrderForm ORDER BY dateTime DESC LIMIT %s,5;", start);
+                DBDAO.query(sql, response);
+                break;
+            }
+
+           /* case "getAllOrderForm":
                 getAllOrderForm(response);
                 break;
 
             case "loadMoreOrderForm": {
                 int start = Integer.valueOf(request.getParameter("start"));
-                loadMoreOrderForm(response, start);
+
+                String sql = String.format("SELECT * FROM OrderForm ORDER BY dateTime DESC LIMIT %d,5;", start);
+                DBDAO.query(sql, response);
+
+                //loadMoreOrderForm(response, start);
                 break;
             }
 
@@ -84,7 +118,7 @@ public class OrderFormServlet extends HttpServlet {
                 int start = Integer.valueOf(request.getParameter("start"));
                 loadMoreUnPaidOrderForm(response, start);
                 break;
-            }
+            }*/
 
         }
 
