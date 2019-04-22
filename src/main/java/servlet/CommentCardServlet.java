@@ -35,64 +35,18 @@ public class CommentCardServlet extends HttpServlet {
             case "refresh": {
                 String discoveryID = request.getParameter("discoveryID");
                 String sql = String.format("SELECT * FROM CommentCard WHERE discoveryID = %s ORDER BY dateTime ASC LIMIT 20;", discoveryID);
-                write(response, getCommentCard(sql));
+                DBDAO.query(sql, response);
                 break;
             }
             case "loadMore": {
                 String discoveryID = request.getParameter("discoveryID");
                 String start = request.getParameter("start");
                 String sql = String.format("SELECT * FROM CommentCard WHERE discoveryID = %s ORDER BY dateTime ASC LIMIT %s,20;", discoveryID, start);
-                write(response, getCommentCard(sql));
+                DBDAO.query(sql, response);
                 break;
             }
         }
     }
 
-    private String getCommentCard(String sql) {
-        List<CommentCard> commentCardList = new ArrayList<>();
-        try {
-            Connection connection = DBDAO.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
 
-            while (resultSet.next()) {
-                CommentCard commentCard = new CommentCard();
-
-                Comment comment = new Comment();
-                comment.setCommentID(resultSet.getInt("commentID"));
-                comment.setSenderPhone(resultSet.getString("senderPhone"));
-                comment.setDateTime(resultSet.getTimestamp("dateTime"));
-                comment.setContent(resultSet.getString("content"));
-                comment.setDiscoveryID(resultSet.getInt("discoveryID"));
-
-                User user = new User();
-                user.setName(resultSet.getString("senderName"));
-                user.setRole(resultSet.getString("senderRole"));
-                user.setHeadURL(resultSet.getString("senderHeadURL"));
-
-                commentCard.setComment(comment);
-                commentCard.setUser(user);
-                commentCardList.add(commentCard);
-            }
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String r = new Gson().toJson(commentCardList);
-        System.out.println("CommentCardServlet:" + r);
-        return r;
-    }
-
-    private void write(HttpServletResponse response, String result) {
-        try {
-            Writer writer = response.getWriter();
-            writer.write(result);
-            writer.flush();
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

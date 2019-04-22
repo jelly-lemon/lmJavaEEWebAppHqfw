@@ -8,6 +8,8 @@ import com.google.gson.JsonObject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.Writer;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 数据库操作
@@ -61,6 +63,10 @@ public class DBDAO {
         return n;
     }
 
+    public static int update(String sql) {
+        return insert(sql);
+    }
+
 
     /**
      * 查询
@@ -68,7 +74,8 @@ public class DBDAO {
      * @param response 回复对象
      */
     public static void query(String sql, HttpServletResponse response) {
-        JsonArray jsonArray = new JsonArray();
+        //JsonArray jsonArray = new JsonArray();
+        List<JsonObject> jsonObjectList = new ArrayList<>();
         try {
             // 查询
             Connection connection = DBDAO.getConnection();
@@ -81,16 +88,32 @@ public class DBDAO {
 
                 // 一条数据
                 for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
+                    /*System.out.println(resultSetMetaData.getColumnTypeName(i));
+                    switch (resultSetMetaData.getColumnTypeName(i)) {
+                        case "DATETIME": {
+                            jsonObject.addProperty(resultSetMetaData.getColumnLabel(i), resultSet.getTimestamp(i));
+                            break;
+                        }
+
+                        default:{
+                            jsonObject.addProperty(resultSetMetaData.getColumnLabel(i), resultSet.getString(i));
+                            break;
+                        }
+                    }*/
+
                     jsonObject.addProperty(resultSetMetaData.getColumnLabel(i), resultSet.getString(i));
+
                 }
 
-                jsonArray.add(jsonObject);
+                jsonObjectList.add(jsonObject);
             }
 
             // 回复
             Writer writer = response.getWriter();
-            writer.write(jsonArray.toString());
+            writer.write(jsonObjectList.toString());
             writer.flush();
+
+            System.out.println(jsonObjectList.toString());
 
             // 关闭
             resultSet.close();
@@ -101,5 +124,32 @@ public class DBDAO {
             e.printStackTrace();
         }
     }
+
+    public static String insertAndGeID(String sql) {
+        String ID = null;
+        try {
+            // 首先插入
+            Connection connection = DBDAO.getConnection();
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+
+            // 再获取 ID
+            sql = "SELECT LAST_INSERT_ID()";
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            if (resultSet.next()) {
+                ID = resultSet.getString(1);
+            }
+
+            // 关闭连接
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ID;
+    }
+
 
 }

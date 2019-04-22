@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="utilcodex-1.23.7-sources">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/utilcodex-1.23.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

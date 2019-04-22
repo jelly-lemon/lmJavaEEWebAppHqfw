@@ -25,43 +25,21 @@ public class CommodityServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
 
-        Connection connection = DBDAO.getConnection();
-        try {
-            Statement statement = connection.createStatement();
-            String sql = "SELECT * FROM Commodity;";
-            ResultSet resultSet = statement.executeQuery(sql);
-            List<Commodity> commodityList = new ArrayList<>();
-            while (resultSet.next()) {
-                int commodityID = resultSet.getInt("commodityID");
-                String name = resultSet.getString("name");
-                String detail = resultSet.getString("detail");
-                float price = resultSet.getFloat("price");
-                String imgURL = resultSet.getString("imgURL");
-
-                Commodity commodity = new Commodity();
-                commodity.setCommodityID(commodityID);
-                commodity.setName(name);
-                commodity.setDetail(detail);
-                commodity.setPrice(price);
-                commodity.setImgURL(imgURL);
-
-                commodityList.add(commodity);
-            }
-            Gson gson = new Gson();
-            String r = gson.toJson(commodityList);
-
-            Writer writer = response.getWriter();
-            writer.write(r);
-            writer.flush();
-            writer.close();
-
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // 获取请求参数
+        String method = request.getParameter("method");
+        if (method == null) {
+            return;
         }
 
+        switch (method) {
+            case "refresh": {
+                String sql = "SELECT * FROM Commodity;";
+                DBDAO.query(sql, response);
+                break;
+            }
+        }
     }
 }
