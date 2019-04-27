@@ -25,7 +25,7 @@ public class PurchasedItemCardServlet extends HttpServlet {
             case "refresh": {
                 String orderFormID = request.getParameter("orderFormID");
                 String sql = String.format("SELECT * FROM PurchasedItemCard WHERE orderFormID = %s;", orderFormID);
-                DBDAO.query(sql, response);
+                DBDAO.queryList(sql, response);
                 break;
             }
         }

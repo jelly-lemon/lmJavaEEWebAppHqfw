@@ -1,6 +1,7 @@
 package servlet.table;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import entity.Comment;
 import utils.DBDAO;
 
@@ -20,10 +21,11 @@ public class CommentServlet extends HttpServlet {
         String method = request.getParameter("method");
         switch (method){
             case "insert": {
-                Comment comment = new Gson().fromJson(request.getParameter("comment"), Comment.class);
+                //Comment comment = new Gson().fromJson(request.getParameter("comment"), Comment.class);
+                JsonObject comment = new Gson().fromJson(request.getParameter("comment"), JsonObject.class);
 
                 String sql = String.format("INSERT INTO `Comment`(dateTime, senderPhone,  discoveryID, content) VALUES(NOW() ,'%s', %s, '%s');",
-                        comment.getSenderPhone(), comment.getDiscoveryID(), comment.getContent());
+                        comment.get("senderPhone").getAsString(), comment.get("discoveryID").getAsString(), comment.get("content").getAsString());
                 DBDAO.insert(sql);
                 break;
             }

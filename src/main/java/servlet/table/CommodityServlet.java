@@ -1,7 +1,5 @@
 package servlet.table;
 
-import com.google.gson.Gson;
-import entity.Commodity;
 import utils.DBDAO;
 
 import javax.servlet.ServletException;
@@ -10,13 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet(name = "CommodityServlet", urlPatterns = "/CommodityServlet")
 public class CommodityServlet extends HttpServlet {
@@ -37,7 +28,7 @@ public class CommodityServlet extends HttpServlet {
         switch (method) {
             case "refresh": {
                 String sql = "SELECT * FROM Commodity;";
-                DBDAO.query(sql, response);
+                DBDAO.queryList(sql, response);
                 break;
             }
         }

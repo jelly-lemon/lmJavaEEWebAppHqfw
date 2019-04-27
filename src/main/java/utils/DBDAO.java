@@ -70,12 +70,43 @@ public class DBDAO {
     }
 
 
+    public static void query(String sql, HttpServletResponse response) {
+        try {
+            // 查询
+            Connection connection = DBDAO.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            // 提取
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+
+            JsonObject jsonObject = new JsonObject();
+            if (resultSet.next()) {
+                for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
+                    jsonObject.addProperty(resultSetMetaData.getColumnLabel(i), resultSet.getString(i));
+                }
+            }
+
+            // 回复
+            Writer writer = response.getWriter();
+            writer.write(new Gson().toJson(jsonObject));
+            writer.flush();
+
+            // 关闭
+            resultSet.close();
+            statement.close();
+            connection.close();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 查询
      * @param sql 查询语句
      * @param response 回复对象
      */
-    public static void query(String sql, HttpServletResponse response) {
+    public static void queryList(String sql, HttpServletResponse response) {
         List<JsonObject> jsonObjectList = new ArrayList<>();
         try {
             // 查询

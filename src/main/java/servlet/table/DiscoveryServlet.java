@@ -3,6 +3,7 @@ package servlet.table;
 import base.BaseHttpServlet;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.sun.xml.internal.ws.encoding.ContentType;
 import entity.Comment;
 import org.apache.commons.fileupload.FileItem;
 import utils.DBDAO;
@@ -28,9 +29,12 @@ public class DiscoveryServlet extends BaseHttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         super.doPost(request, response);
 
+
+
+
         List<FileItem> fileItemList = UploadFile.getFileItemList(request);
-        Map<String, String> map = UploadFile.getParameterMap(fileItemList);
-        JsonObject discovery = new Gson().fromJson(map.get("discovery"), JsonObject.class);
+        Map<String, String> parameterMap = UploadFile.getParameterMap(fileItemList);
+        JsonObject discovery = new Gson().fromJson(parameterMap.get("discovery"), JsonObject.class);
         // 先插入基本内容
         String sql = String.format("INSERT INTO Discovery(phone, content, tag, dateTime, contactQQ, contactPhone, imgURL) VALUES('%s', '%s', '%s', NOW(), '%s', '%s', '[]');",
                 discovery.get("phone").getAsString(), discovery.get("content").getAsString(), discovery.get("tag").getAsString(), discovery.get("contactQQ").getAsString(), discovery.get("contactPhone").getAsString());

@@ -27,14 +27,14 @@ public class OrderFormCardServlet extends HttpServlet {
         switch (method) {
             case "refresh": {
                 String sql = "SELECT * FROM OrderFormCard ORDER BY createDateTime DESC limit 5;";
-                DBDAO.query(sql, response);
+                DBDAO.queryList(sql, response);
                 break;
             }
 
             case "loadMore": {
                 String start = request.getParameter("start");
                 String sql = String.format("SELECT * FROM OrderFormCard ORDER BY createDateTime DESC limit %s,5;", start);
-                DBDAO.query(sql, response);
+                DBDAO.queryList(sql, response);
                 break;
             }
         }

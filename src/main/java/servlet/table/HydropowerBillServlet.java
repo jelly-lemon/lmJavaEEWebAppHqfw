@@ -22,14 +22,14 @@ public class HydropowerBillServlet extends BaseHttpServlet {
             case "refresh": {
                 String room = request.getParameter("room");
                 String sql = String.format("SELECT * FROM HydropowerBill WHERE room = '%s' ORDER BY month DESC LIMIT 0,5;", room);
-                DBDAO.query(sql, response);
+                DBDAO.queryList(sql, response);
                 break;
             }
             case "loadMore": {
                 String start = request.getParameter("start");
                 String room = request.getParameter("room");
                 String sql = String.format("SELECT * FROM HydropowerBill WHERE room = '%s' ORDER BY month DESC LIMIT %s,5;", room, start);
-                DBDAO.query(sql, response);
+                DBDAO.queryList(sql, response);
                 break;
             }
         }
