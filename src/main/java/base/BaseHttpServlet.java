@@ -9,16 +9,16 @@ import java.io.IOException;
 public class BaseHttpServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        req.setCharacterEncoding("utf-8");
-        resp.setCharacterEncoding("utf-8");
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        req.setCharacterEncoding("utf-8");
-        resp.setCharacterEncoding("utf-8");
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
     }
 }

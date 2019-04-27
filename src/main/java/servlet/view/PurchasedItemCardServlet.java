@@ -1,4 +1,4 @@
-package servlet;
+package servlet.view;
 
 import utils.DBDAO;
 
@@ -9,24 +9,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-@WebServlet(name = "OrderFormCardServlet", urlPatterns = "/OrderFormCardServlet")
-public class OrderFormCardServlet extends HttpServlet {
+@WebServlet(name = "PurchasedItemCardServlet", urlPatterns = "/PurchasedItemCardServlet")
+public class PurchasedItemCardServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 字符编码
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
 
         String method = request.getParameter("method");
+
         switch (method) {
-            case "query": {
-                String sql = "SELECT * FROM OrderFormCard ORDER BY dateTime DESC limit 5;";
+            case "refresh": {
+                String orderFormID = request.getParameter("orderFormID");
+                String sql = String.format("SELECT * FROM PurchasedItemCard WHERE orderFormID = %s;", orderFormID);
                 DBDAO.query(sql, response);
                 break;
             }

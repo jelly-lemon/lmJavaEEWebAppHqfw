@@ -1,4 +1,4 @@
-package servlet;
+package servlet.table;
 
 import com.google.gson.Gson;
 import entity.Comment;
@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 @WebServlet(name = "CommentServlet", urlPatterns = "/CommentServlet")
 public class CommentServlet extends HttpServlet {

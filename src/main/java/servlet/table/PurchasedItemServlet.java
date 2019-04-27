@@ -1,4 +1,4 @@
-package servlet;
+package servlet.table;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

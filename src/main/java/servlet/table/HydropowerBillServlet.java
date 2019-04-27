@@ -1,4 +1,4 @@
-package servlet;
+package servlet.table;
 
 import base.BaseHttpServlet;
 import utils.DBDAO;
@@ -14,22 +14,22 @@ import java.util.Date;
 @WebServlet(name = "HydropowerBillServlet", urlPatterns = "/HydropowerBillServlet")
 public class HydropowerBillServlet extends BaseHttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doGet(request, response);
 
-        String method = req.getParameter("method");
+        String method = request.getParameter("method");
         switch (method) {
             case "refresh": {
-                String room = req.getParameter("room");
+                String room = request.getParameter("room");
                 String sql = String.format("SELECT * FROM HydropowerBill WHERE room = '%s' ORDER BY month DESC LIMIT 0,5;", room);
-                DBDAO.query(sql, resp);
+                DBDAO.query(sql, response);
                 break;
             }
             case "loadMore": {
-                String start = req.getParameter("start");
-                String room = req.getParameter("room");
+                String start = request.getParameter("start");
+                String room = request.getParameter("room");
                 String sql = String.format("SELECT * FROM HydropowerBill WHERE room = '%s' ORDER BY month DESC LIMIT %s,5;", room, start);
-                DBDAO.query(sql, resp);
+                DBDAO.query(sql, response);
                 break;
             }
         }
@@ -37,15 +37,15 @@ public class HydropowerBillServlet extends BaseHttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doPost(request, response);
 
-        String method = req.getParameter("method");
+        String method = request.getParameter("method");
         switch (method) {
             case "paySuccess": {
-                String month = req.getParameter("month");
-                String room = req.getParameter("room");
-                String buyerPhone = req.getParameter("buyerPhone");
+                String month = request.getParameter("month");
+                String room = request.getParameter("room");
+                String buyerPhone = request.getParameter("buyerPhone");
 
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                 String billNumber = simpleDateFormat.format(new Date()) + buyerPhone.substring(3, 7);

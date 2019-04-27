@@ -1,4 +1,4 @@
-package servlet;
+package servlet.view;
 
 import base.BaseHttpServlet;
 import interfaces.IDiscoveryServlet;
@@ -16,27 +16,27 @@ import java.io.Writer;
 @WebServlet(name = "DiscoveryCardServlet", urlPatterns = {"/DiscoveryCardServlet"})
 public class DiscoveryCardServlet extends BaseHttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doGet(request, response);
 
-        String method = req.getParameter("method");
+        String method = request.getParameter("method");
         switch (method) {
             case "refresh": {
                 String sql = String.format("SELECT * FROM DiscoveryCard  ORDER BY dateTime DESC limit 5;");
-                DBDAO.query(sql, resp);
+                DBDAO.query(sql, response);
                 break;
             }
             case "loadMore": {
-                String start = req.getParameter("start");
+                String start = request.getParameter("start");
                 String sql = String.format("SELECT * FROM DiscoveryCard  ORDER BY dateTime DESC limit %s,5;", start);
-                DBDAO.query(sql, resp);
+                DBDAO.query(sql, response);
                 break;
             }
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doPost(request, response);
     }
 }

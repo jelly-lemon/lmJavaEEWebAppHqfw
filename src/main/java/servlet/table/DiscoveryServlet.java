@@ -1,4 +1,4 @@
-package servlet;
+package servlet.table;
 
 import base.BaseHttpServlet;
 import com.google.gson.Gson;
@@ -20,15 +20,15 @@ import java.util.Map;
 @WebServlet(name = "DiscoveryServlet", urlPatterns = "/DiscoveryServlet")
 public class DiscoveryServlet extends BaseHttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doGet(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doPost(request, response);
 
-        List<FileItem> fileItemList = UploadFile.getFileItemList(req);
+        List<FileItem> fileItemList = UploadFile.getFileItemList(request);
         Map<String, String> map = UploadFile.getParameterMap(fileItemList);
         JsonObject discovery = new Gson().fromJson(map.get("discovery"), JsonObject.class);
         // 先插入基本内容

@@ -2,10 +2,12 @@ package utils;
 
 
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspWriter;
 import java.io.Writer;
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,13 +18,13 @@ import java.util.List;
  */
 public class DBDAO {
     // 驱动类名
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    public static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     // 数据库名
-    static String dataBase = "hqfw";
+    public static String dataBase = "hqfw";
     // 账户
-    static String user = "root";
+    public static String user = "root";
     // 密码
-    static String password = "mysql";
+    public static String password = "mysql";
 
 
     /**
@@ -32,7 +34,7 @@ public class DBDAO {
     public static Connection getConnection() {
         Connection con = null;
         try {
-            String url = String.format("jdbc:mysql://mysql_service:3306/%s?useSSL=false", dataBase);
+            String url = String.format("jdbc:mysql://localhost:3306/%s?useSSL=false", dataBase);
             // 加载驱动
             Class.forName(JDBC_DRIVER);
             // 建立连接
@@ -74,7 +76,6 @@ public class DBDAO {
      * @param response 回复对象
      */
     public static void query(String sql, HttpServletResponse response) {
-        //JsonArray jsonArray = new JsonArray();
         List<JsonObject> jsonObjectList = new ArrayList<>();
         try {
             // 查询
@@ -104,9 +105,8 @@ public class DBDAO {
                     jsonObject.addProperty(resultSetMetaData.getColumnLabel(i), resultSet.getString(i));
 
                 }
-
                 jsonObjectList.add(jsonObject);
-            }
+        }
 
             // 回复
             Writer writer = response.getWriter();
@@ -149,6 +149,80 @@ public class DBDAO {
             e.printStackTrace();
         }
         return ID;
+    }
+
+    public static void jspQueryTest(JspWriter out) {
+        try {
+
+
+            Connection con = DBDAO.getConnection();
+
+            // 查询
+            Statement state = con.createStatement();
+            String sql = "select * from Users";
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                out.println(rs.getString("name") + "<br>");
+            }
+
+            // 关闭
+            rs.close();
+            state.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void checkAccount(String phone, String password, HttpServletResponse response) {
+        try {
+            Connection connection = DBDAO.getConnection();
+            Statement statement = connection.createStatement();
+
+
+            // 查询
+            String sql = String.format("select * from Users where phone='%s';", phone);
+            ResultSet rs = statement.executeQuery(sql);
+
+
+            JsonObject result = new JsonObject();
+            String msg;
+
+            // 账号正确
+            if (rs.next()) {
+
+                String passwordCorrect = rs.getString("password");
+                if ( passwordCorrect.equals(password) ) {
+                    msg = "登录成功";
+
+
+                    ResultSetMetaData resultSetMetaData = rs.getMetaData();
+                    for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
+                        result.addProperty(resultSetMetaData.getColumnLabel(i), rs.getString(i));
+                    }
+                } else {
+                    msg = "密码错误";
+                }
+            } else {
+                msg = "账号不存在";
+            }
+
+            result.addProperty("msg", msg);
+
+            // 回复
+            Writer writer = response.getWriter();
+            writer.write(result.toString());
+            writer.flush();
+
+            // 关闭
+            rs.close();
+            statement.close();
+            connection.close();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

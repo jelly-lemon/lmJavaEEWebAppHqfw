@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="war" name="lmJavaEEWebAppHqfw">
-    <output-path>$PROJECT_DIR$/docker/tomcat</output-path>
+    <output-path>$PROJECT_DIR$/out</output-path>
     <root id="archive" name="lmJavaEEWebAppHqfw.war">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -9,7 +9,6 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="gson-2.8.5" />
           <element id="library" level="project" name="fileupload" />
-          <element id="library" level="project" name="mysql-connector-java-5.1.46" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="lmJavaEEWebAppHqfw/web/Web" />
