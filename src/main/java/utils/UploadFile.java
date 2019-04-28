@@ -19,6 +19,10 @@ import java.util.*;
 
 
 public class UploadFile {
+    public static boolean deleteFile(String url) {
+        File file = new File(url);
+        return file.delete();
+    }
 
     public static FileItem getFileItem(List<FileItem> fileItemList) {
 

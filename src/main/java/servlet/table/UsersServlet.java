@@ -51,11 +51,14 @@ public class UsersServlet extends BaseHttpServlet {
             List<FileItem> fileItemList = UploadFile.getFileItemList(request);
             Map<String, String> parameterMap = UploadFile.getParameterMap(fileItemList);
 
+
+            String oldHeadURL = parameterMap.get("headURL");
+            UploadFile.deleteFile(oldHeadURL);
+
+
             String phone = parameterMap.get("phone");
-
-
-            String headURL = UploadFile.saveHeadImage(UploadFile.getFileItem(fileItemList), phone);
-            String sql = String.format("UPDATE users set headURL='%s' where phone='%s';", headURL, phone);
+            String newHeadURL = UploadFile.saveHeadImage(UploadFile.getFileItem(fileItemList), phone);
+            String sql = String.format("UPDATE users set headURL='%s' where phone='%s';", newHeadURL, phone);
             DBDAO.update(sql);
         } else {
             String method = request.getParameter("method");
