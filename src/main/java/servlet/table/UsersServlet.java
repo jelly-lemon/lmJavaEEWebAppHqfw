@@ -10,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,9 @@ public class UsersServlet extends BaseHttpServlet {
                 // 获取电话、密码
                 String phone = request.getParameter("phone");
                 String password = request.getParameter("password");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+
+                System.out.println(simpleDateFormat.format(new Date()) + ":" + phone + ":" + password);
                 DBDAO.checkAccount(phone, password, response);
                 break;
             }
